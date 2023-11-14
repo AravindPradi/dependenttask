@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Register Here !!</h2>
+
+<form
+  method="post"
+  id="studentForm"
+  data-branches-url="{% url 'ajax_load_branches' %}"
+  novalidate
+>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+</style>
+
+{% csrf_token %}
+<table>
+  {{ form.as_table }}
+</table>
+  <a href="{% url 'new' %}" class="btn btn-primary">Submit</a>
+
+</form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+  $("#id_college").change(function () {
+    var url = $("#studentForm").attr("data-branches-url");
+    var collegeId = $(this).val();
+
+    $.ajax({
+      url: url,
+      data: {
+        college: collegeId,
+      },
+      success: function (data) {
+        $("#id_branch").html(data);
+      },
+    });
+  });
+</script>
+
+{% endblock %}
+
